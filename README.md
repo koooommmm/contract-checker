@@ -1,1 +1,28 @@
 # contract-checker
+
+契約書をアップロードすると、その契約書にどのようなリスクがあるのかを教えてくれるWebサービス
+
+## 技術スタック
+- フロントエンド: React, TailwindCSS
+- バックエンド: Node.js (Express)
+- データベース: Firestore
+- 認証基盤: Firebase Authentication
+- ストレージ: Cloud Storage for Firebase
+- 環境構築: Docker (docker-compose)
+
+## 始め方
+### 前提条件
+- Dockerがインストールされていること
+
+### 構築手順
+```
+# イメージをビルドする
+docker compose build
+
+# コンテナを立ち上げる
+docker compose up -d
+```
+
+### 利用方法
+- アプリケーションは`http://localhost:5173`でアクセスできます
+- バックエンドAPIは`http://localhost:5000`で利用できます
