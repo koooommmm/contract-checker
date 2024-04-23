@@ -21,6 +21,11 @@ docker compose build
 
 # コンテナを立ち上げる
 docker compose up -d
+
+# Lint結果を確認
+docker compose run frontend npm run lint
+
+docker compose run backend npm run lint
 ```
 
 ### 利用方法
