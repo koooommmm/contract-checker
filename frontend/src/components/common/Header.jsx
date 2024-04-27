@@ -1,8 +1,9 @@
 import React from 'react';
-import { useSignOut } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebaseConfig';
 
 const Header = () => {
+  const [user] = useAuthState(auth);
   const [signOut, loading, error] = useSignOut(auth);
 
   if (error) {
@@ -12,6 +13,7 @@ const Header = () => {
       </div>
     );
   }
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -23,16 +25,17 @@ const Header = () => {
           契約書チェッカー
         </span>
       </a>
-      <button
-        onClick={async () => {
-          const success = await signOut();
-          if (success) {
-            alert('You are sign out');
-          }
-        }}
-      >
-        Sign out
-      </button>
+
+      {user && (
+        <button
+          onClick={async () => {
+            await signOut();
+          }}
+          className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600'
+        >
+          ログアウト
+        </button>
+      )}
     </nav>
   );
 };
