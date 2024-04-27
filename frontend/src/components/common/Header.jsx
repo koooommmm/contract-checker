@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebaseConfig';
 

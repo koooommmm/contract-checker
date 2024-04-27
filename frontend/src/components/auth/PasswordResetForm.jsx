@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebaseConfig';
 
 const PasswordResetForm = () => {
   const [email, setEmail] = useState('');
   const [isSended, setIsSended] = useState(false);
-  const [sendPasswordResetEmail, sending, _, error] =
+  const [sendPasswordResetEmail, sending, error] =
     useSendPasswordResetEmail(auth);
 
   const handleSubmit = async (event) => {
