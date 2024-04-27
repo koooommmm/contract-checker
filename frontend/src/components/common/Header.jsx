@@ -14,6 +14,7 @@ const Header = () => {
     );
   }
 
+  // TODO: サインアウト時のちらつきを抑える
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -26,6 +27,7 @@ const Header = () => {
         </span>
       </a>
 
+      {/* TODO: ログアウトボタンのレイアウト修正 */}
       {user && (
         <button
           onClick={async () => {

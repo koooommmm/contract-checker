@@ -6,6 +6,7 @@ import { auth } from '../../firebase/firebaseConfig';
 const PublicRoute = () => {
   const [user, loading, error] = useAuthState(auth);
 
+  // TODO: 画面切り替え時のちらつきを抑える
   if (loading) {
     return <div>Loading...</div>;
   }
