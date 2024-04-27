@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../firebase/firebaseConfig';
+import { getErrorMessage } from '../../firebase/firebaseError';
 
 const SignupForm = () => {
   const [email, setEmail] = useState('');
@@ -24,7 +25,7 @@ const SignupForm = () => {
         <h1 className='text-xl font-bold mb-4 text-center'>サインアップ</h1>
         {error && (
           <p className='p-3 my-10 text-center text-red-500 rounded bg-red-100'>
-            サインアップに失敗しました。入力内容に誤りがないか確認してください。
+            {getErrorMessage(error, 'signup')}
           </p>
         )}
         <form onSubmit={handleSubmit} className='space-y-6'>
