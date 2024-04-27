@@ -1,11 +1,32 @@
+import React from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import PrivateRoute from './components/auth/PrivateRoute';
+import PublicRoute from './components/auth/PublicRoute';
+import Header from './components/common/Header';
 import './index.css';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import PasswordReset from './pages/PasswordReset';
+import Signup from './pages/Signup';
 
-function App() {
+const App = () => {
   return (
-    <div className='text-center mt-20'>
-      <h1 className='text-3xl font-bold underline text-blue-600'>HelloWorld</h1>
-    </div>
+    <>
+      <Header />
+      <Router>
+        <Routes>
+          <Route element={<PrivateRoute />}>
+            <Route path='/' element={<Home />} />
+          </Route>
+          <Route element={<PublicRoute />}>
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+            <Route path='/password-reset' element={<PasswordReset />} />
+          </Route>
+        </Routes>
+      </Router>
+    </>
   );
-}
+};
 
 export default App;
