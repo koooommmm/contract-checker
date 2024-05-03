@@ -1,13 +1,22 @@
 {
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "lint": "eslint ."
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-fileupload": "^1.5.0",
+    "firebase": "^10.11.1",
+    "libreoffice-convert": "^1.5.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.1.1",
     "eslint": "^9.1.1",
-    "globals": "^15.0.0"
+    "globals": "^15.0.0",
+    "nodemon": "^3.1.0"
   }
 }
