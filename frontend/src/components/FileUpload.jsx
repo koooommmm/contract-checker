@@ -28,7 +28,8 @@ const FileUpload = () => {
             },
           }
         );
-        console.log('File uploaded successfully:', response.data);
+        console.log(response.data.fileUrl);
+        console.log(response.data.extractedText);
       } catch (error) {
         console.error('Error uploading file:', error);
       }
