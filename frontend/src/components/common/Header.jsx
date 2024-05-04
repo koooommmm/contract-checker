@@ -13,9 +13,8 @@ const Header = () => {
     );
   }
 
-  // TODO: サインアウト時のちらつきを抑える
   if (loading) {
-    return <p>Loading...</p>;
+    return null;
   }
 
   return (

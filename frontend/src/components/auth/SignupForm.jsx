@@ -68,9 +68,13 @@ const SignupForm = () => {
           </div>
         </form>
         <div className='mt-10 text-center text-sm text-gray-500'>
-          <a href='/login' className='hover:text-gray-700'>
+          <button
+            type='button'
+            onClick={() => navigate('/login')}
+            className='hover:text-gray-700'
+          >
             すでにアカウントをお持ちの方はこちら
-          </a>
+          </button>
         </div>
       </div>
     </div>
