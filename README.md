@@ -15,6 +15,8 @@
 - Dockerがインストールされていること
 
 ### 構築手順
+- `frontend/.env.development`に開発用のFirebase設定を記載する
+- 下記を実施
 ```
 # イメージをビルドする
 docker compose build
