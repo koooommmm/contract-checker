@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 import { updateContract } from '../../models/contracts';
@@ -60,6 +61,15 @@ const ContractRow = (props) => {
             </button>
         </td>
     </tr>
+}
+
+ContractRow.propTypes ={
+    title: PropTypes.string,
+    isEditing: PropTypes.bool,
+    setEditingIndex: PropTypes.number,
+    index: PropTypes.number,
+    id: PropTypes.number,
+    createdAt: PropTypes.string    
 }
 
 export default ContractRow;
