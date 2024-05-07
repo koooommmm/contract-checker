@@ -64,6 +64,18 @@ const ContractDetail = () => {
       setNumPages(numPages);
     }
 
+    function incrementPage() {
+        if (pageNumber != numPages) {
+            setPageNumber(pageNumber + 1);
+        } 
+    }
+
+    function decrementPage() {
+        if (pageNumber != 1) {
+            setPageNumber(pageNumber - 1);
+        } 
+    }
+
 
     if (loading) {
         return <div>ローディング</div>;
@@ -84,7 +96,12 @@ const ContractDetail = () => {
                     <Document file={url} onLoadSuccess={onDocumentLoadSuccess} options={pdfjsOptions}>
                         <Page  pageNumber={pageNumber}/>
                     </Document>
-                    {/* TODO ページナビゲーションを作る */}
+                    {/* TODO ページ移動時に画面が強制的に一番上にスクロールされるのを防ぐ */}
+                    <div className='flex justify-center'>
+                        <button onClick={() => decrementPage()}>←</button>
+                        {pageNumber} / {numPages}
+                        <button onClick={() => incrementPage()}>→</button>
+                    </div>
                 </div>
                 
                 {/* アラート一覧 */}
