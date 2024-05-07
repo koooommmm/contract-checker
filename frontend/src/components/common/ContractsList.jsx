@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebaseConfig';
@@ -6,10 +6,19 @@ import { auth } from '../../firebase/firebaseConfig';
 import { getContractsList } from '../../models/contracts';
 import ContractRow from './ContractRow';
 
-const contractsList = await getContractsList();
 
 const ContractsList = () => {
     const [user, loading, error] = useAuthState(auth);
+    const [contractsList, setContractsList] = useState([]);
+      // 非同期関数でデータを取得し、`contractsList`にセット
+    useEffect(() => {
+        const fetchContracts = async () => {
+        const contracts = await getContractsList();
+        setContractsList(contracts);
+        };
+        fetchContracts();
+    });
+
 
     // ファイル名を編集する際ひとつずつしか編集できないようにするためのstate
     // -1     : 未選択
@@ -36,6 +45,7 @@ const ContractsList = () => {
             <tbody>
                 {contractsList.map((item, index) => {
                     return <ContractRow 
+                        key={item.id} // 各行にユニークなkeyを追加
                         index={index}
                         id={item.id}
                         title={item.title}

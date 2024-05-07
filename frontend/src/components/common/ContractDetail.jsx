@@ -47,7 +47,7 @@ const ContractDetail = () => {
             // gsutil cors set cors.json gs://contract-checker-694c2.appspot.com/
             const storage = getStorage();
             // TODO
-            // 「/userId/ファイル名」　の構成にしておくか
+            // 「/userId/ファイル名」の構成にしておくか
             // userIdの一致を条件とした認証があるべき
             const pathRef = ref(storage, 'pdf/' + fetchedContract.pdf);
             const url = await getDownloadURL(pathRef);
