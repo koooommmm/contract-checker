@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { auth } from '../firebase/firebaseConfig';
 
 const BACKEND_ENDPOINT = import.meta.env.VITE_BACKEND_ENDPOINT;
