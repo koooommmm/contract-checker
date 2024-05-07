@@ -2,7 +2,9 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const dotenv = require('dotenv');
-dotenv.config({ path: '.env.development' });
+const envFile = `.env.${process.env.NODE_ENV}`;
+dotenv.config({ path: envFile });
+console.log(process.env);
 const morgan = require('morgan');
 const fileRoutes = require('./routes/fileRoutes');
 
