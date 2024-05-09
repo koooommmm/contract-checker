@@ -57,9 +57,13 @@ const LoginForm = () => {
             />
           </div>
           <div className='text-right text-sm text-gray-500'>
-            <a href='/password-reset' className='hover:text-gray-700'>
+            <button
+              type='button'
+              onClick={() => navigate('/password-reset')}
+              className='hover:text-gray-700'
+            >
               パスワードを忘れた場合
-            </a>
+            </button>
           </div>
           <div className='flex justify-center'>
             <button
@@ -72,9 +76,13 @@ const LoginForm = () => {
           </div>
         </form>
         <div className='mt-10 text-center text-sm text-gray-500'>
-          <a href='/signup' className='hover:text-gray-700'>
+          <button
+            type='button'
+            onClick={() => navigate('/signup')}
+            className='hover:text-gray-700'
+          >
             アカウントをお持ちでない方はこちら
-          </a>
+          </button>
         </div>
       </div>
     </div>

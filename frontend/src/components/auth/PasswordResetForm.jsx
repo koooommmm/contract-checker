@@ -10,8 +10,10 @@ const PasswordResetForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await sendPasswordResetEmail(email);
-    setIsSended(true);
+    const result = await sendPasswordResetEmail(email);
+    if (result) {
+      setIsSended(true);
+    }
   };
 
   return (
