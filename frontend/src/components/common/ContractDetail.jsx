@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 
-import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase/firebaseConfig';
 
@@ -43,14 +42,10 @@ const ContractDetail = () => {
       const fetchedContract = await getContract(id);
       setAlerts(fetchedContract.alerts);
 
-      // StorageからPDFの取得
-      // gsutil cors set cors.json gs://contract-checker-694c2.appspot.com/
-      const storage = getStorage();
       // TODO
       // 「/userId/ファイル名」の構成にしておくか
       // userIdの一致を条件とした認証があるべき
-      const pathRef = ref(storage, fetchedContract.pdf);
-      const url = await getDownloadURL(pathRef);
+      const url = fetchedContract.pdf;
       setUrl(url);
     }
     fetchContract();
