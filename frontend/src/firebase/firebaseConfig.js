@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore'
 import { getAuth, sendEmailVerification } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -14,4 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export { auth, sendEmailVerification };
+const firestore = getFirestore();
+
+export { auth, sendEmailVerification, firestore };
