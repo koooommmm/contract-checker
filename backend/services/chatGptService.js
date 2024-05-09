@@ -8,7 +8,7 @@ const analyzeContractRisk = async (contractText, retries = 3, delay = 5000) => {
   const prompt = `
   下記の契約書の内容についてリスクを洗い出して指定したフォーマットで返してください。
   ## フォーマット
-  json形式とし、
+  json形式とし、articleには条番号、contentにはどのようなリスクなのかを説明して疑問系で丁寧に投げかける形式としてください。
   [{"article" : "第xx条", "content": "〇〇していませんか？"},{"article" : "第xx条", "content": "〇〇していませんか？"}]
   のような形式としてください。
 
