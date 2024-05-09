@@ -19,14 +19,14 @@ exports.uploadFile = async (req, res) => {
   }
 
   // ファイルの存在確認
-  if (!req.files || !(req.files.wordFile || req.files.pdfFile)) {
+  if (!req.files) {
     return res.status(400).send('No file uploaded.');
   }
 
-  const file = req.files.wordFile || req.files.pdfFile;
+  const file = req.files.file;
 
   try {
-    const pdfBuffer = req.files.wordFile
+    const pdfBuffer = req.files.file
       ? await pdfService.convertToPdf(file.data)
       : file.data;
 
@@ -43,7 +43,7 @@ exports.uploadFile = async (req, res) => {
     );
 
     const documentJson = {
-      title: 'test',
+      title: file.name,
       createdAt: Date.now(),
       pdf: fileUrl,
       alerts: riskAnalysis,

@@ -22,7 +22,7 @@ const FileUpload = () => {
       return;
     }
     const formData = new FormData();
-    formData.append('wordFile', file);
+    formData.append('file', file);
     const user = auth.currentUser;
 
     if (user) {
@@ -69,12 +69,6 @@ const FileUpload = () => {
   return (
     <div>
       <form onSubmit={handleSubmit} className='mt-5'>
-        <input
-          type='text'
-          required
-          placeholder='タイトル'
-          className='border border-gray-300 px-4 py-2 rounded-md mb-3'
-        />
         <input
           type='file'
           onChange={handleFileChange}
