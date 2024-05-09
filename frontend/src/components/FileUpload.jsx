@@ -17,6 +17,10 @@ const FileUpload = () => {
   // フォーム送信時の処理
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!file) {
+      alert('Please select a file to upload.');
+      return;
+    }
     const formData = new FormData();
     formData.append('wordFile', file);
     const user = auth.currentUser;
@@ -25,23 +29,40 @@ const FileUpload = () => {
       setLoading(true);
       setUploadResult(null);
 
-      try {
-        const response = await axios.post(
-          `${BACKEND_ENDPOINT}/api/files/upload?userId=${user.uid}`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+      // 認証トークンを取得
+      user
+        .getIdToken()
+        .then(async (idToken) => {
+          try {
+            const response = await axios.post(
+              `${BACKEND_ENDPOINT}/api/files/upload`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  Authorization: `Bearer ${idToken}`, // トークンをヘッダーに設定
+                },
+              }
+            );
+            setUploadResult(response.data);
+          } catch (error) {
+            console.error('Error uploading file:', error);
+            setUploadResult({
+              error: 'Error uploading file. Please try again.',
+            });
+          } finally {
+            setLoading(false);
           }
-        );
-        setUploadResult(response.data);
-      } catch (error) {
-        console.error('Error uploading file:', error);
-        setUploadResult({ error: 'Error uploading file. Please try again.' });
-      } finally {
-        setLoading(false);
-      }
+        })
+        .catch((error) => {
+          console.error('Error getting token:', error);
+          setLoading(false);
+          setUploadResult({
+            error: 'Authentication error. Please log in again.',
+          });
+        });
+    } else {
+      alert('You must be logged in to upload files.');
     }
   };
 
