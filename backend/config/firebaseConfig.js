@@ -1,5 +1,14 @@
 const { initializeApp } = require('firebase/app');
 const { getStorage } = require('firebase/storage');
+const admin = require('firebase-admin');
+
+// Firebase Admin SDKを初期化
+const serviceAccount = require('./serviceAccountKey.json');
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+}
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -14,4 +23,4 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const storage = getStorage(firebaseApp);
 
-module.exports = storage;
+module.exports = { admin, storage };
