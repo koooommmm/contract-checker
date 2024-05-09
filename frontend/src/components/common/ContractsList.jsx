@@ -17,7 +17,7 @@ const ContractsList = () => {
         setContractsList(contracts);
         };
         fetchContracts();
-    });
+    }, []);
 
 
     // ファイル名を編集する際ひとつずつしか編集できないようにするためのstate
