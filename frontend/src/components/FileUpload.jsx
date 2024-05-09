@@ -68,11 +68,21 @@ const FileUpload = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input type='file' accept='.docx,.pdf' onChange={handleFileChange} />
+      <form onSubmit={handleSubmit} className='mt-5'>
+        <input
+          type='text'
+          required
+          placeholder='タイトル'
+          className='border border-gray-300 px-4 py-2 rounded-md mb-3'
+        />
+        <input
+          type='file'
+          onChange={handleFileChange}
+          className='border-gray-300 px-4 py-2 rounded-md mb-3'
+        />
         <button
           type='submit'
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md'
         >
           アップロード
         </button>

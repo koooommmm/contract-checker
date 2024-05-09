@@ -1,9 +1,10 @@
+import ContractsList from '../components/common/ContractsList';
 import FileUpload from '../components/FileUpload';
 
 const Home = () => {
   return (
     <div>
-      <h1>Success Login!</h1>
+      <ContractsList />
       <FileUpload />
     </div>
   );
