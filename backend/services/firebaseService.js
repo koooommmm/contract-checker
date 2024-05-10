@@ -3,18 +3,16 @@ const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
 
 const db = admin.firestore();
 
-exports.verifyIdToken = (idToken) => {
-  return admin
-    .auth()
-    .verifyIdToken(idToken)
-    .then((decodedToken) => {
-      return { isValid: true, uid: decodedToken.uid };
-    })
-    .catch((error) => {
-      console.error(error);
-      return { isValid: false, error: error };
-    });
+exports.verifyIdToken = async (idToken) => {
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    return { isValid: true, userId: decodedToken.uid };
+  } catch (error) {
+    console.error(error);
+    return { isValid: false, userId: null, error: error };
+  }
 };
+
 exports.uploadToFirebaseStorage = async (pdfBuffer, userId) => {
   const fileRef = ref(storage, `user_uploads/${userId}/${Date.now()}.pdf`);
   await uploadBytes(fileRef, pdfBuffer);
