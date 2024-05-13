@@ -1,43 +1,9 @@
 // import firebase from 'firebase/app';
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  updateDoc,
-} from 'firebase/firestore';
-import { firestore } from '../firebase/firebaseConfig';
+import axios from 'axios';
+import { collection, doc, getDoc, getDocs, query } from 'firebase/firestore';
+import { auth, firestore } from '../firebase/firebaseConfig';
 
-// 契約書データのスキーマ
-// {
-//     contractId: int,
-//     title: text,
-//     pdf: text,
-//     createdAt: Timestamp,
-//     alarts: [
-//         {
-//             article: text,
-//             content: text
-//         },
-//         ...
-//     ]
-// }
-
-// 契約書を追加
-// TODO 今のFirebaseのversionに合致しない書き方なので書き換える
-
-// export async function addContract(contractId, title, pdf, alerts) {
-//     const contracts = collection(firestore, 'contracts');
-//     const q = query(contracts);
-//     db.collection('contracts').doc(contractId).set({
-//         title: title,
-//         pdf: pdf,
-//         alerts, alerts,
-//         createdAt: firebase.firestore.FieldValue.serverTimestamp() // サーバーのタイムスタンプを使用
-//     });
-// }
+const BACKEND_ENDPOINT = import.meta.env.VITE_BACKEND_ENDPOINT;
 
 // 契約書の概要の一覧を取得
 export async function getContractsList() {
@@ -59,6 +25,7 @@ export async function getContractsList() {
       id: doc.id,
       title: data.title,
       createdAt: date,
+      filePath: data.filePath,
     });
   });
 
@@ -75,15 +42,73 @@ export async function getContract(contractId) {
 }
 
 // 契約書情報を更新
-export async function updateContract(contractId, data) {
-  const colRef = collection(firestore, 'contracts');
-  const docRef = doc(colRef, contractId);
-  await updateDoc(docRef, data);
+export async function updateContract(contractId, newTitle) {
+  const postData = {
+    contractId: contractId,
+    newTitle: newTitle,
+  };
+  const user = auth.currentUser;
+
+  if (user) {
+    // 認証トークンを取得
+    user
+      .getIdToken()
+      .then(async (idToken) => {
+        try {
+          const response = await axios.post(
+            `${BACKEND_ENDPOINT}/api/files/update`,
+            postData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${idToken}`, // トークンをヘッダーに設定
+              },
+            }
+          );
+        } catch (error) {
+          console.error('Error update title:', error);
+        }
+      })
+      .catch((error) => {
+        console.error('Error getting token:', error);
+      });
+  } else {
+    alert('You must be logged in to update files.');
+  }
 }
 
 // 契約書を削除
-export async function deleteContract(contractId) {
-  const colRef = collection(firestore, 'contracts');
-  const docRef = doc(colRef, contractId);
-  await deleteDoc(docRef);
+export async function deleteContract(contractId, filePath) {
+  const postData = {
+    contractId: contractId,
+    filePath: filePath,
+  };
+  const user = auth.currentUser;
+
+  if (user) {
+    // 認証トークンを取得
+    user
+      .getIdToken()
+      .then(async (idToken) => {
+        try {
+          const response = await axios.post(
+            `${BACKEND_ENDPOINT}/api/files/delete`,
+            postData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${idToken}`, // トークンをヘッダーに設定
+              },
+            }
+          );
+        } catch (error) {
+          console.error('Error update title:', error);
+        }
+      })
+      .catch((error) => {
+        console.error('Error getting token:', error);
+      });
+  } else {
+    alert('You must be logged in to update files.');
+  }
 }

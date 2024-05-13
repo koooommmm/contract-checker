@@ -2,15 +2,19 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { updateContract } from '../../models/contracts';
+import { deleteContract, updateContract } from '../../models/contracts';
 
 import { FaTimes } from 'react-icons/fa';
 import { FaCheck } from 'react-icons/fa6';
 import { HiPencil } from 'react-icons/hi2';
 import { MdDelete } from 'react-icons/md';
 
-async function editTitle(id, title) {
-  await updateContract(id, { title: title });
+async function editTitle(contractId, newTitle) {
+  await updateContract(contractId, newTitle);
+}
+
+async function deleteItem(id, filePath) {
+  await deleteContract(id, filePath);
 }
 
 const ContractRow = (props) => {
@@ -70,6 +74,7 @@ const ContractRow = (props) => {
               onClick={async () => {
                 await editTitle(props.id, title);
                 setEditingIndex(-1);
+                await props.fetchContracts();
               }}
               className='float-right'
             >
@@ -83,7 +88,13 @@ const ContractRow = (props) => {
         <div className='float-left'>{props.createdAt}</div>
         {/* 削除ボタン
             TODO 削除機能の実装 */}
-        <button className='float-right'>
+        <button
+          className='float-right'
+          onClick={async () => {
+            await deleteItem(props.id, props.filePath);
+            await props.fetchContracts();
+          }}
+        >
           <MdDelete size={24} color={'#888'} />
         </button>
       </td>

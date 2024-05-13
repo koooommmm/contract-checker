@@ -9,12 +9,12 @@ import ContractRow from './ContractRow';
 const ContractsList = () => {
   const [user, loading, error] = useAuthState(auth);
   const [contractsList, setContractsList] = useState([]);
+  const fetchContracts = async () => {
+    const contracts = await getContractsList();
+    setContractsList(contracts);
+  };
   // 非同期関数でデータを取得し、`contractsList`にセット
   useEffect(() => {
-    const fetchContracts = async () => {
-      const contracts = await getContractsList();
-      setContractsList(contracts);
-    };
     fetchContracts();
   }, []);
 
@@ -50,8 +50,10 @@ const ContractsList = () => {
                 id={item.id}
                 title={item.title}
                 createdAt={item.createdAt}
+                filePath={item.filePath}
                 isEditing={editingIndex === index}
                 setEditingIndex={setEditingIndex}
+                fetchContracts={fetchContracts}
               />
             );
           })}
