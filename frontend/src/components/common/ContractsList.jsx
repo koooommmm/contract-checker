@@ -43,13 +43,18 @@ const ContractsList = () => {
         </thead>
         <tbody>
           {contractsList.map((item, index) => {
+            const createdAt = new Date(item.createdAt);
             return (
               <ContractRow
-                key={item.id} // 各行にユニークなkeyを追加
+                key={item.id}
                 index={index}
                 id={item.id}
                 title={item.title}
-                createdAt={item.createdAt}
+                createdAt={createdAt.toLocaleDateString('ja-JP', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                })}
                 filePath={item.filePath}
                 isEditing={editingIndex === index}
                 setEditingIndex={setEditingIndex}

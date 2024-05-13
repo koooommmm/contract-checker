@@ -41,6 +41,7 @@ const FileUpload = () => {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                   Authorization: `Bearer ${idToken}`, // トークンをヘッダーに設定
+                  userId: user.uid,
                 },
               }
             );

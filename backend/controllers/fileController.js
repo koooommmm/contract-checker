@@ -3,6 +3,20 @@ const firebaseService = require('../services/firebaseService');
 const textExtractionService = require('../services/textExtractionService');
 const chatGptService = require('../services/chatGptService');
 
+exports.getContractByUserId = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const contracts = await firebaseService.getContractsByUserId(
+      'contracts',
+      userId
+    );
+    res.status(200).json(contracts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 exports.deleteFile = async (req, res) => {
   try {
     await firebaseService.deleteFileFromStorage(req.body.filePath);
@@ -50,6 +64,7 @@ exports.uploadFile = async (req, res) => {
     );
 
     const documentJson = {
+      userId: req.userId,
       title: file.name,
       createdAt: Date.now(),
       alerts: riskAnalysis,

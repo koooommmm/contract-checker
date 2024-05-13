@@ -25,7 +25,6 @@ exports.uploadToFirebaseStorage = async (pdfBuffer, filePath) => {
 };
 
 exports.deleteFileFromStorage = async (filePath) => {
-  console.log(filePath);
   const fileRef = ref(storage, filePath);
   try {
     await deleteObject(fileRef);
@@ -33,6 +32,25 @@ exports.deleteFileFromStorage = async (filePath) => {
   } catch (error) {
     console.error('Failed to delete file:', error);
     return { success: false, message: 'Failed to delete file.', error: error };
+  }
+};
+
+exports.getContractsByUserId = async (collectionName, userId) => {
+  try {
+    const contractsRef = db.collection(collectionName);
+    const snapshot = await contractsRef.where('userId', '==', userId).get();
+
+    const contracts = [];
+    snapshot.forEach((doc) => {
+      const contract = doc.data();
+      contract.id = doc.id;
+      contracts.push(contract);
+    });
+
+    return contracts;
+  } catch (error) {
+    console.error('Error fetching contracts:', error);
+    throw error;
   }
 };
 

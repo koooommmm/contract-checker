@@ -16,8 +16,8 @@ async function editTitle(contractId, newTitle) {
   await updateContract(contractId, newTitle);
 }
 
-async function deleteItem(id, filePath) {
-  await deleteContract(id, filePath);
+async function deleteItem(contractId, filePath) {
+  await deleteContract(contractId, filePath);
 }
 
 const ContractRow = (props) => {
