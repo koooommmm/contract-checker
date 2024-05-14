@@ -48,11 +48,16 @@ exports.uploadFile = async (req, res) => {
   }
 
   const file = req.files.file;
+  const filename = req.body.filename;
   try {
-    const pdfBuffer = await pdfService.convertToPdf(file.data);
+    const pdfBuffer =
+      file.mimetype !== 'application/pdf'
+        ? await pdfService.convertToPdf(file.data)
+        : file.data;
     const extractedText = await textExtractionService.extractTextFromPDFBuffer(
       pdfBuffer
     );
+
     const riskAnalysis = await chatGptService.analyzeContractRisk(
       extractedText
     );
@@ -65,7 +70,7 @@ exports.uploadFile = async (req, res) => {
 
     const documentJson = {
       userId: req.userId,
-      title: file.name,
+      title: filename,
       createdAt: Date.now(),
       alerts: riskAnalysis,
       pdf: fileUrl,

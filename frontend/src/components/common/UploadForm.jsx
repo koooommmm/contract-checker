@@ -28,6 +28,7 @@ const UploadForm = () => {
     }
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('filename', file.name);
     const user = auth.currentUser;
 
     if (user) {
