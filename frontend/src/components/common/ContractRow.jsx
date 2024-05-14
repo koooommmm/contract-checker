@@ -137,6 +137,8 @@ ContractRow.propTypes = {
   index: PropTypes.number,
   id: PropTypes.string,
   createdAt: PropTypes.string,
+  fetchContracts: PropTypes.func,
+  filePath: PropTypes.string,
 };
 
 export default ContractRow;
