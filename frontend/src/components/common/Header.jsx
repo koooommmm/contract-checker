@@ -18,23 +18,28 @@ const Header = () => {
   }
 
   return (
-    <nav className='w-full h-auto p-5 bg-white '>
-      <a href='/' className='flex justify-center'>
-        <span className='text-3xl text-red-400 font-bold'>
-          契約書チェッカー
-        </span>
-      </a>
-
-      {/* TODO: ログアウトボタンのレイアウト修正 */}
-      {user && (
-        <button
-          onClick={async () => {
-            await signOut();
-          }}
-          className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600'
-        >
-          ログアウト
-        </button>
+    <nav className='grid grid-cols-3 items-center justify-center h-20'>
+      <div className='col-span-1'></div>
+      <div className='col-span-1 flex justify-center items-center'>
+        <a href='/' className='text-center'>
+          <span className='text-3xl text-red-400 font-bold'>
+            契約書チェッカー
+          </span>
+        </a>
+      </div>
+      {user ? (
+        <div className='col-span-1 flex justify-end items-center pr-10'>
+          <button
+            onClick={async () => {
+              await signOut();
+            }}
+            className='text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800'
+          >
+            ログアウト
+          </button>
+        </div>
+      ) : (
+        <div className='col-span-1'></div>
       )}
     </nav>
   );

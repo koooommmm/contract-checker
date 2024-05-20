@@ -1,78 +1,80 @@
-// import firebase from 'firebase/app';
-import { collection, query, getDocs, getDoc, updateDoc, doc, deleteDoc } from 'firebase/firestore';
-import { firestore } from '../firebase/firebaseConfig';
+import axios from 'axios';
+import { collection, doc, getDoc } from 'firebase/firestore';
+import { auth, firestore } from '../firebase/firebaseConfig';
 
-// 契約書データのスキーマ
-// {
-//     contractId: int,
-//     title: text,
-//     pdf: text,
-//     createdAt: Timestamp,
-//     alarts: [
-//         {
-//             article: text,
-//             content: text
-//         },
-//         ...
-//     ]
-// }
+const BACKEND_ENDPOINT = import.meta.env.VITE_BACKEND_ENDPOINT;
 
-// 契約書を追加
-// TODO 今のFirebaseのversionに合致しない書き方なので書き換える
+// Firebaseから契約書情報を取得するヘルパー関数
+async function fetchContracts() {
+  const user = auth.currentUser;
 
-// export async function addContract(contractId, title, pdf, alerts) {
-//     const contracts = collection(firestore, 'contracts');
-//     const q = query(contracts);
-//     db.collection('contracts').doc(contractId).set({
-//         title: title,
-//         pdf: pdf,
-//         alerts, alerts,
-//         createdAt: firebase.firestore.FieldValue.serverTimestamp() // サーバーのタイムスタンプを使用
-//     });
-// }
+  if (user) {
+    try {
+      const idToken = await user.getIdToken();
+      const response = await axios.get(`${BACKEND_ENDPOINT}/api/files/`, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${idToken}`,
+          userid: user.uid,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(`Error get contracts:`, error);
+    }
+  } else {
+    alert('You must be logged in to perform this action.');
+  }
+}
 
 // 契約書の概要の一覧を取得
 export async function getContractsList() {
-    const contracts = collection(firestore, 'contracts');
-    const q = query(contracts);
-    const querySnapshot = await getDocs(q);
-
-    let list = []
-
-    querySnapshot.docs.forEach((doc) => {
-        const data = doc.data();
-        const date = data.createdAt.toDate().toLocaleDateString(
-            'ja-JP', {year: 'numeric',month: '2-digit',day: '2-digit'}
-        );
-        list.push({
-            id: doc.id,
-            title: data.title,
-            createdAt: date
-        })
-    });
-
-    return list;   
+  return fetchContracts();
 }
 
 // 契約書の詳細を取得
 export async function getContract(contractId) {
-    const colRef = collection(firestore, 'contracts');
-    const docRef = doc(colRef, contractId);
-    const docSnap = await getDoc(docRef);
+  const docRef = doc(collection(firestore, 'contracts'), contractId);
+  const docSnap = await getDoc(docRef);
 
-    return docSnap.data();   
+  return docSnap.data();
+}
+
+// バックエンドと通信して契約書情報を更新または削除するヘルパー関数
+async function updateOrDeleteContract(postData, action) {
+  const user = auth.currentUser;
+
+  if (user) {
+    try {
+      const idToken = await user.getIdToken();
+      await axios.post(`${BACKEND_ENDPOINT}/api/files/${action}`, postData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${idToken}`,
+        },
+      });
+    } catch (error) {
+      console.error(`Error ${action} contract:`, error);
+    }
+  } else {
+    alert('You must be logged in to perform this action.');
+  }
 }
 
 // 契約書情報を更新
-export async function updateContract(contractId, data) {
-    const colRef = collection(firestore, 'contracts');
-    const docRef = doc(colRef, contractId);
-    await updateDoc(docRef, data);
+export async function updateContract(contractId, newTitle) {
+  const postData = {
+    contractId: contractId,
+    newTitle: newTitle,
+  };
+  await updateOrDeleteContract(postData, 'update');
 }
 
 // 契約書を削除
-export async function deleteContract(contractId) {
-    const colRef = collection(firestore, 'contracts');
-    const docRef = doc(colRef, contractId);
-    await deleteDoc(docRef);
+export async function deleteContract(contractId, filePath) {
+  const postData = {
+    contractId: contractId,
+    filePath: filePath,
+  };
+  await updateOrDeleteContract(postData, 'delete');
 }
