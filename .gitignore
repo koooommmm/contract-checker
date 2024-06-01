@@ -28,4 +28,3 @@ dist-ssr
 serviceAccountKey.json
 .firebase
 .firebaserc
-firebase.json
