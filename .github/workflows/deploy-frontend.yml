@@ -29,9 +29,11 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           VITE_BACKEND_ENDPOINT: ${{ secrets.BACKEND_ENDPOINT }}
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"          
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CONTRACT_CHECKER_DEV }}'
+          channelId: live
           projectId: contract-checker-dev
           entryPoint: frontend
