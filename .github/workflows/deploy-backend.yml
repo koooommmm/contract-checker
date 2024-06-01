@@ -34,7 +34,7 @@ jobs:
         echo "FIREBASE_APP_ID=${{secrets.FIREBASE_APP_ID}}" >> .env.production
         echo "FIREBASE_MEASUREMENT_ID=${{secrets.FIREBASE_MEASUREMENT_ID}}" >> .env.production
         echo "OPENAI_API_KEY=${{secrets.OPENAI_API_KEY}}" >> .env.production
-        echo "${{secrets.FIREBASE_SERVICE_ACCOUNT_CONTRACT_CHECKER_DEV}}" > config/serviceAccountKey.json
+        echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_CONTRACT_CHECKER_DEV_BASE64 }}" | base64 --decode > config/serviceAccountKey.json
         gcloud builds submit --tag gcr.io/contract-checker-dev/backend
 
     - name: Deploy to Cloud Run
