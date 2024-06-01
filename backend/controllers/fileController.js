@@ -19,12 +19,21 @@ exports.getContractByUserId = async (req, res) => {
 
 exports.deleteFile = async (req, res) => {
   try {
-    await firebaseService.deleteFileFromStorage(req.body.filePath);
-    await firebaseService.deleteDocument('contracts', req.body.contractId);
+    await firebaseService.deleteFileFromStorage(req.body.filePath, req.userId);
+    await firebaseService.deleteDocument(
+      'contracts',
+      req.body.contractId,
+      req.userId
+    );
     res.status(200).json({ message: 'File deleted successfully.' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
+    if (error.message == 'Unauthorized access') {
+      console.log(error);
+      res.status(403).json({ error: error.message });
+    } else {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
   }
 };
 
@@ -33,12 +42,18 @@ exports.updateFile = async (req, res) => {
     await firebaseService.updateDocumentTitle(
       'contracts',
       req.body.contractId,
-      req.body.newTitle
+      req.body.newTitle,
+      req.userId
     );
     res.status(200).json({ message: 'File updated successfully.' });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
+    if (error.message == 'Unauthorized access') {
+      console.log(error);
+      res.status(403).json({ error: error.message });
+    } else {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
   }
 };
 

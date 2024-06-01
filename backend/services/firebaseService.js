@@ -24,7 +24,11 @@ exports.uploadToFirebaseStorage = async (pdfBuffer, filePath) => {
   return getDownloadURL(fileRef);
 };
 
-exports.deleteFileFromStorage = async (filePath) => {
+exports.deleteFileFromStorage = async (filePath, userId) => {
+  if (!filePath.includes(userId)) {
+    throw new Error('Unauthorized access');
+  }
+
   const fileRef = ref(storage, filePath);
   try {
     await deleteObject(fileRef);
@@ -61,16 +65,33 @@ exports.addDocument = async (collectionName, documentJson) => {
   return docRef.id;
 };
 
-exports.updateDocumentTitle = async (collectionName, documentId, newTitle) => {
+exports.updateDocumentTitle = async (
+  collectionName,
+  documentId,
+  newTitle,
+  userId
+) => {
   const docRef = db.collection(collectionName).doc(documentId);
+  const doc = await docRef.get();
+
+  if (!doc.exists || doc.data().userId !== userId) {
+    throw new Error('Unauthorized access');
+  }
+
   await docRef.update({
     title: newTitle,
   });
   return { success: true, message: 'Document title updated successfully.' };
 };
 
-exports.deleteDocument = async (collectionName, documentId) => {
+exports.deleteDocument = async (collectionName, documentId, userId) => {
   const docRef = db.collection(collectionName).doc(documentId);
+  const doc = await docRef.get();
+
+  if (!doc.exists || doc.data().userId !== userId) {
+    throw new Error('Unauthorized access');
+  }
+
   await docRef.delete();
   return { success: true, message: 'Document deleted successfully.' };
 };
