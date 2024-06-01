@@ -24,5 +24,8 @@ dist-ssr
 *.sw?
 .env.*
 
-# Firebase secret key
+# Firebase
 serviceAccountKey.json
+.firebase
+.firebaserc
+firebase.json
