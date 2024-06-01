@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - 'backend/**'
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -32,3 +33,4 @@ jobs:
 
     - name: Deploy to Cloud Run
       run: gcloud run deploy backend --image gcr.io/contract-checker-dev/backend --platform managed --region asia-northeast1 --set-env-vars NODE_ENV=production --port 5000
+
